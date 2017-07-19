@@ -70,13 +70,14 @@ func selectContainer(cs []types.Container) types.Container {
 }
 
 func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	cli, err := client.NewEnvClient()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to connect to Docker API: %v\n", err)
 		os.Exit(1)
 	}
-
-	ctx := context.Background()
 
 	containers, err := cli.ContainerList(ctx, types.ContainerListOptions{})
 	if err != nil {
